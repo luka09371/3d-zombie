@@ -8,8 +8,9 @@ public class BulletScript : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // Check if the object collided with is a target
-        TargetScript target = collision.gameObject.GetComponent<TargetScript>();
+        TargetAiScript target = collision.gameObject.GetComponent<TargetAiScript>();
         if (target != null)
+         
         {
             // Deal damage to the target
             target.TakeDamage(damage);
@@ -18,4 +19,5 @@ public class BulletScript : MonoBehaviour
             Destroy(gameObject);
         }
     }
+   
 }
