@@ -1,18 +1,19 @@
+// GunWithMagazine.cs
 using System.Collections;
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public class GunWithMagazine : MonoBehaviour
 {
-    public Transform gunTransform;   // Reference to the gun's transform (where bullets will spawn)
-    public GameObject bulletPrefab;  // Prefab of the bullet
-    public float fireRate = 0.1f;    // Rate of fire (in seconds)
-    public float bulletSpeed = 10f;  // Speed of the bullet
-    public int magazineSize = 10;    // Number of bullets in a magazine
-    public float reloadTime = 1.5f;   // Time it takes to reload (in seconds)
+    public Transform gunTransform;
+    public GameObject bulletPrefab;
+    public float bulletSpeed = 10f;
+    public int magazineSize = 10;
+    public float fireRate = 0.5f;
+    public float reloadTime = 2f;
 
-    private int currentAmmo;         // Current bullets in the magazine
-    private bool isReloading = false; // Flag to check if the gun is currently reloading
-    private float nextFireTime;      // Time of the next allowed shot
+    private int currentAmmo;
+    private bool isReloading = false;
+    private float nextFireTime;
 
     private void Start()
     {
@@ -24,7 +25,7 @@ public class Gun : MonoBehaviour
         if (isReloading)
             return;
 
-        // Check if the player wants to shoot
+        // Check if the player wants to shoot continuously while holding the button
         if (Input.GetButton("Fire1") && Time.time > nextFireTime)
         {
             nextFireTime = Time.time + 1f / fireRate;
@@ -45,6 +46,10 @@ public class Gun : MonoBehaviour
             // Instantiate a bullet
             GameObject bullet = Instantiate(bulletPrefab, gunTransform.position, gunTransform.rotation);
 
+            // Attach the BulletScript to the bullet
+            BulletScript bulletScript = bullet.AddComponent<BulletScript>();
+            bulletScript.damage = 0; // Adjust the damage value as needed
+
             // Apply force to the bullet
             bullet.GetComponent<Rigidbody>().velocity = gunTransform.forward * bulletSpeed;
 
@@ -61,6 +66,7 @@ public class Gun : MonoBehaviour
     private IEnumerator Reload()
     {
         isReloading = true;
+
         // Play reload animation or sound
 
         yield return new WaitForSeconds(reloadTime);
@@ -68,5 +74,12 @@ public class Gun : MonoBehaviour
         // Refill ammo
         currentAmmo = magazineSize;
         isReloading = false;
+    }
+
+    // Public method to change the magazine size externally
+    public void ChangeMagazineSize(int newSize)
+    {
+        magazineSize = newSize;
+        currentAmmo = magazineSize; // Refill the magazine when changing its size
     }
 }
