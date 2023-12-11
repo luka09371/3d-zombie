@@ -48,7 +48,7 @@ public class GunWithMagazine : MonoBehaviour
 
             // Attach the BulletScript to the bullet
             BulletScript bulletScript = bullet.AddComponent<BulletScript>();
-            bulletScript.damage = 0; // Adjust the damage value as needed
+            bulletScript.damageAmount = 0; // Corrected line
 
             // Apply force to the bullet
             bullet.GetComponent<Rigidbody>().velocity = gunTransform.forward * bulletSpeed;
@@ -62,6 +62,7 @@ public class GunWithMagazine : MonoBehaviour
             Debug.Log("Out of ammo! Reload!");
         }
     }
+
 
     private IEnumerator Reload()
     {

@@ -1,23 +1,21 @@
-// BulletScript.cs
 using UnityEngine;
 
 public class BulletScript : MonoBehaviour
 {
-    public int damage = 10; // Adjust the damage value as needed
+    public int damageAmount = 10; // Adjust the damage value as needed
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Check if the object collided with is a target
+        // Check if the collided object has the TargetAiScript
         TargetAiScript target = collision.gameObject.GetComponent<TargetAiScript>();
-        if (target != null)
-         
-        {
-            // Deal damage to the target
-            target.TakeDamage(damage);
 
-            // Destroy the bullet
-            Destroy(gameObject);
+        if (target != null)
+        {
+            // Call TakeDamage on the target
+            target.TakeDamage(damageAmount);
         }
+
+        // Destroy the bullet
+        Destroy(gameObject);
     }
-   
 }
